@@ -34,7 +34,15 @@ export async function signup(_previous: AuthState, formData: FormData): Promise<
       email, password,
       options: { emailRedirectTo: new URL("/auth/callback", site).toString() },
     });
-    if (error) return { error: "가입 요청을 처리하지 못했습니다. 입력값과 인증 설정을 확인해 주세요.", message: "" };
+    if (error) {
+      if (error.code === "email_address_invalid") {
+        return { error: "인증 메일을 받을 수 있는 실제 이메일 주소를 입력해 주세요.", message: "" };
+      }
+      if (error.code === "over_email_send_rate_limit") {
+        return { error: "메일 요청이 너무 많습니다. 잠시 뒤 다시 시도해 주세요.", message: "" };
+      }
+      return { error: "가입 요청을 처리하지 못했습니다. 입력값과 인증 설정을 확인해 주세요.", message: "" };
+    }
     signedIn = Boolean(data.session);
   } catch {
     return { error: "가입 서버에 연결하지 못했습니다. 설정을 확인해 주세요.", message: "" };
@@ -43,7 +51,7 @@ export async function signup(_previous: AuthState, formData: FormData): Promise<
     revalidatePath("/", "layout");
     redirect("/todos");
   }
-  return { error: "", message: "가입 요청을 처리했습니다. 이메일 확인이 필요한 경우 받은 메일의 링크를 눌러 주세요." };
+  return { error: "", message: "아직 로그인되지 않았습니다. 처음 가입한 이메일이라면 받은 인증 링크를 가입을 시작한 브라우저에서 열어 주세요. 이미 가입한 이메일이라면 기존 비밀번호로 로그인하세요." };
 }
 
 export async function logout(previous: AuthState): Promise<AuthState> {
