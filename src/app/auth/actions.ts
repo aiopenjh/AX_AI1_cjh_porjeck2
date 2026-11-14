@@ -38,8 +38,8 @@ export async function signup(_previous: AuthState, formData: FormData): Promise<
       if (error.code === "email_address_invalid") {
         return { error: "인증 메일을 받을 수 있는 실제 이메일 주소를 입력해 주세요.", message: "" };
       }
-      if (error.code === "over_email_send_rate_limit") {
-        return { error: "메일 요청이 너무 많습니다. 잠시 뒤 다시 시도해 주세요.", message: "" };
+      if (error.code === "over_email_send_rate_limit" || error.status === 429) {
+        return { error: "지금은 인증메일 발송 한도에 걸렸습니다. 버튼을 다시 누르지 말고 기존 메일함을 확인하거나, 시간을 두고 한 번만 다시 시도해 주세요.", message: "" };
       }
       return { error: "가입 요청을 처리하지 못했습니다. 입력값과 인증 설정을 확인해 주세요.", message: "" };
     }
@@ -51,7 +51,7 @@ export async function signup(_previous: AuthState, formData: FormData): Promise<
     revalidatePath("/", "layout");
     redirect("/todos");
   }
-  return { error: "", message: "아직 로그인되지 않았습니다. 처음 가입한 이메일이라면 받은 인증 링크를 가입을 시작한 브라우저에서 열어 주세요. 이미 가입한 이메일이라면 기존 비밀번호로 로그인하세요." };
+  return { error: "", message: "처음 가입했다면 가입 이메일의 받은편지함과 스팸함을 확인해 주세요. 인증 링크는 가입을 시작한 브라우저에서 열어 주세요. 이미 가입했다면 로그인해 주세요." };
 }
 
 export async function logout(previous: AuthState): Promise<AuthState> {

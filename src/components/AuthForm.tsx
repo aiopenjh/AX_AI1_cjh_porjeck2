@@ -11,8 +11,6 @@ export default function AuthForm({ variant, disabled = false }: { variant: "logi
     <section className="mx-auto max-w-md rounded-xl border border-orange-200 bg-yellow-50 p-6">
       <h1 className="mb-4 text-2xl font-bold text-rose-800">{title}</h1>
       {disabled && <p className="mb-4 text-amber-800">Supabase 연결 설정 전에는 인증 요청을 보낼 수 없습니다.</p>}
-      {state.error && <p role="alert" className="mb-3 text-red-700">{state.error}</p>}
-      {state.message && <p role="status" className="mb-3 text-amber-800">{state.message}</p>}
       <form action={action}>
         <fieldset disabled={disabled || pending} className="grid gap-3">
           <label htmlFor="auth-email">이메일</label>
@@ -23,6 +21,11 @@ export default function AuthForm({ variant, disabled = false }: { variant: "logi
             {pending ? "처리 중…" : title}
           </button>
         </fieldset>
+        <div aria-atomic="true" role="status">
+          {variant === "signup" && pending && <p className="mt-3 text-sm text-amber-800">가입 요청을 확인 중입니다. 잠시 기다려 주세요.</p>}
+          {!pending && state.message && <p className="mt-3 rounded border border-amber-300 bg-amber-50 p-3 text-amber-900">{state.message}</p>}
+        </div>
+        {!pending && state.error && <p role="alert" className="mt-3 rounded border border-red-300 bg-red-50 p-3 text-red-800">{state.error}</p>}
       </form>
       <p className="mt-5 text-sm"><Link className="underline" href={variant === "login" ? "/signup" : "/login"}>{variant === "login" ? "회원가입으로 이동" : "로그인으로 이동"}</Link></p>
     </section>

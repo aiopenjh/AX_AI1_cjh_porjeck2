@@ -15,3 +15,8 @@ DB가 비어 있는 새 Supabase 프로젝트를 만들 때만 [테이블·정�
 ## 확인
 
 `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`
+
+## 수정 기록
+
+- 회원가입 버튼 아래에 처리 중·이메일 확인·발송 한도(429) 안내를 추가했습니다. 안내를 못 보고 가입 버튼을 다시 누르는 혼동을 줄이기 위한 수정입니다. Supabase의 메일 발송 한도나 인증 정책은 변경하지 않았습니다.
+- 배포 주소: [Vercel Todo](https://project-qy5xx.vercel.app)
