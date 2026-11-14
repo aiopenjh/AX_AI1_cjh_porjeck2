@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: #78350f;
+  font-family: Arial, "Malgun Gothic", sans-serif;
+}
+
+/* 원본 HTML의 수정 대화상자 내부 스타일을 옮깁니다. */
+#edit-dialog input,
+#edit-dialog textarea {
+  background-color: rgba(195, 231, 236, 0.1);
+}
